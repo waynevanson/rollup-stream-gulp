@@ -669,6 +669,13 @@
     "@types/node" "*"
     "@types/vinyl" "*"
 
+"@types/vinyl-source-stream@^0.0.30":
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/@types/vinyl-source-stream/-/vinyl-source-stream-0.0.30.tgz#c9bdc95100654152fc68ac425607f9d6bd3bf228"
+  integrity sha512-RbIEp1V45sf2qQdYKddnn68rak3MwFclG8lqRgSDIrxNnDc74P3tMXLy26vj5zSI832K65dhwTwr2cNp5Gqpuw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/vinyl@*", "@types/vinyl@^2.0.4":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@types/vinyl/-/vinyl-2.0.4.tgz#9a7a8071c8d14d3a95d41ebe7135babe4ad5995a"
@@ -4584,6 +4591,14 @@ vinyl-fs@^3.0.0, vinyl-fs@^3.0.3:
     vinyl "^2.0.0"
     vinyl-sourcemap "^1.1.0"
 
+vinyl-source-stream@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/vinyl-source-stream/-/vinyl-source-stream-2.0.0.tgz#f38a5afb9dd1e93b65d550469ac6182ac4f54b8e"
+  integrity sha1-84pa+53R6Ttl1VBGmsYYKsT1S44=
+  dependencies:
+    through2 "^2.0.3"
+    vinyl "^2.1.0"
+
 vinyl-sourcemap@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/vinyl-sourcemap/-/vinyl-sourcemap-1.1.0.tgz#92a800593a38703a8cdb11d8b300ad4be63b3e16"
@@ -4597,7 +4612,7 @@ vinyl-sourcemap@^1.1.0:
     remove-bom-buffer "^3.0.0"
     vinyl "^2.0.0"
 
-vinyl@^2.0.0, vinyl@^2.2.1:
+vinyl@^2.0.0, vinyl@^2.1.0, vinyl@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/vinyl/-/vinyl-2.2.1.tgz#23cfb8bbab5ece3803aa2c0a1eb28af7cbba1974"
   integrity sha512-LII3bXRFBZLlezoG5FfZVcXflZgWP/4dCwKtxd5ky9+LOtM4CS3bIRQsmR1KMnMW07jpE8fqR2lcxPZ+8sJIcw==

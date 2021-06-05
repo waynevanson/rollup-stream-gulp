@@ -1,4 +1,9 @@
-import { InputOptions, OutputOptions, rollup, RollupOutput } from "rollup";
+import {
+  InputOptions,
+  OutputOptions,
+  rollup as _rollup,
+  RollupOutput,
+} from "rollup";
 import { Readable } from "stream";
 
 export interface RollupStreamProps<
@@ -31,10 +36,11 @@ export interface RollupStreamReturn<
   isDone: () => void;
 }
 
-export default function <
-  O extends readonly [OutputOptions, ...OutputOptions[]]
->({ input, outputs }: RollupStreamProps<O>): RollupStreamReturn<O> {
-  const build = rollup(input);
+export function rollup<O extends readonly [OutputOptions, ...OutputOptions[]]>({
+  input,
+  outputs,
+}: RollupStreamProps<O>): RollupStreamReturn<O> {
+  const build = _rollup(input);
 
   const countofoutputs = outputs.length;
   let countdestroyed = 0;

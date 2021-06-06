@@ -18,10 +18,11 @@ export function rollup({
         return callback(new Error("Cannot bundle a non-existent file!"));
       }
 
-      const readable = S.rollup({ ...input, input: file.path })(
+      const bundles = S.rollup({ ...input, input: file.path })(
         ...(Array.isArray(output) ? output : [output])
       );
 
+      bundles.on("data", (chunk: RP.OutputChunk | RP.OutputAsset) => {
         const _file = file.clone();
         switch (chunk.type) {
           case "asset": {
@@ -39,6 +40,7 @@ export function rollup({
         }
       });
 
+      bundles.once("end", () => {
         callback(null);
       });
     },

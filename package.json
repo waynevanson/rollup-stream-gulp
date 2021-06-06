@@ -10,7 +10,7 @@
       "require": "./dist/cjs"
     }
   },
-  "description": "Rollup 2 plugin and streams",
+  "description": "Implentation of Rollup as a stream and Rollup as a Gulp plugin",
   "author": "Wayne Van Son",
   "files": [
     "dist"

@@ -1,34 +1,57 @@
 {
-  "name": "gulp-rollup2",
-  "version": "1.0.0",
-  "main": "dist/cjs/index.js",
+  "name": "rollup-gulp-stream",
+  "version": "0.0.0",
+  "description": "Rollup 2 plugin and streams",
+  "author": "Wayne Van Son",
+  "files": [
+    "dist"
+  ],
+  "repository": "https://github.com/waynevanson/rollup-gulp-stream",
+  "keywords": [
+    "gulpplugin",
+    "gulp",
+    "stream",
+    "node",
+    "rollup"
+  ],
+  "types": "dist/cjs/index.d.ts",
+  "exports": {
+    "./": {
+      "import": "./dist/es6",
+      "require": "./dist/cjs"
+    }
+  },
   "license": "MIT",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc -p tsconfig.es6.json & tsc -p tsconfig.cjs.json"
   },
   "peerDependencies": {
-    "rollup": "^2.50.6"
+    "rollup": "^2"
+  },
+  "peerDependenciesMeta": {
+    "rollup": {
+      "optional": false
+    }
   },
   "devDependencies": {
     "@types/gulp": "^4.0.8",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.12.1",
     "@types/vinyl": "^2.0.4",
-    "@types/vinyl-fs": "^2.4.11",
-    "@types/vinyl-source-stream": "^0.0.30",
     "gulp": "^4.0.2",
     "jest": "^27.0.4",
-    "rollup": "^2.50.6",
+    "rollup": "^2",
     "ts-jest": "^27.0.2",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.2",
     "vinyl": "^2.2.1",
-    "vinyl-fs": "^3.0.3",
-    "vinyl-source-stream": "^2.0.0"
+    "@types/merge-stream": "^1.1.2"
+  },
+  "engines": {
+    "node": ">=12"
   },
   "dependencies": {
-    "fp-ts": "^2.10.5",
-    "fp-ts-indexed-monad": "^2.10.2",
-    "monocle-ts": "^2.3.10"
+    "merge-stream": "^2.0.0"
   }
 }

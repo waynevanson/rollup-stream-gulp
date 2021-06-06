@@ -1,107 +1,82 @@
-import {
-  InputOptions,
-  OutputOptions,
-  rollup as _rollup,
-  RollupOutput,
-} from "rollup";
-import { Readable } from "stream";
+import * as RP from "rollup";
+import { PassThrough, Readable, ReadableOptions } from "stream";
+import { default as merge } from "merge-stream";
 
-export interface RollupStreamProps<
-  O extends readonly [OutputOptions, ...OutputOptions[]]
-> {
-  input: InputOptions;
-  outputs: O;
-}
+/**
+ * @summary
+ * Creates many chunks from one set of input and output options.
+ */
+export class ReadableRollup extends Readable {
+  private chunks: RP.RollupOutput["output"] | null = null;
+  private build: RP.RollupBuild | null = null;
 
-export interface RollupStreamReturn<
-  O extends readonly [OutputOptions, ...OutputOptions[]]
-> {
-  /**
-   * @summary
-   * The readable stream for each output bundle,
-   * strictly typed for your pleasure
-   */
-  streams: readonly Readable[] & { length: O["length"] };
-  /**
-   * @summary
-   * When you're done building all the files, call this function.
-   *
-   * Rollup plugins might contain hooks that require them to end.
-   */
-  close: () => void;
-  /**
-   * @summary
-   *
-   */
-  isDone: () => void;
-}
+  constructor(
+    private readonly input: Omit<RP.InputOptions, "output">,
+    private readonly output: RP.OutputOptions = {},
+    options: ReadableOptions = {}
+  ) {
+    super({ ...options, objectMode: true });
+  }
 
-export function rollup<O extends readonly [OutputOptions, ...OutputOptions[]]>({
-  input,
-  outputs,
-}: RollupStreamProps<O>): RollupStreamReturn<O> {
-  const build = _rollup(input);
+  _construct(this: this, done: StreamCallback) {
+    RP.rollup(this.input)
+      .then((build) => {
+        this.build = build;
+        return build.generate(this.output);
+      })
+      .then((generated) => {
+        this.chunks = generated.output;
+        done();
+      })
+      .catch(done);
+  }
 
-  const countofoutputs = outputs.length;
-  let countdestroyed = 0;
-
-  const isDone = () => countdestroyed >= countofoutputs;
-
-  const close = () => {
-    build.then((value) => {
-      value.closed || value.close();
-    });
-  };
-
-  const streams: readonly Readable[] & { length: O["length"] } = outputs.map(
-    (output) => {
-      let _chunks: null | RollupOutput["output"] = null;
-      return new Readable({
-        objectMode: true,
-        construct(this, callback) {
-          build
-            // generate a build for a single output
-            .then((build) => build.generate(output))
-            //  assign the chunks for use in read
-            .then(({ output }) => {
-              _chunks = output;
-              callback();
-            })
-            // advise the stream if something went wrong.
-            .catch(callback);
-        },
-        read(this, size) {
-          // if null then don't read
-          //
-          // this should not be null because we made it non-null
-          // with the construct method
-          if (!_chunks)
-            return this.destroy(
-              new Error("the code output was null, add some details")
-            );
-
-          // get the chunks
-          const chunks = _chunks.splice(0, size);
-
-          // push the chunks
-          for (const chunk of chunks) {
-            this.push(chunk);
-          }
-
-          // if we couldn't send enough chunks, we're at the end
-          // cleanup this stream
-          if (chunks.length !== size) this.destroy();
-        },
-        destroy(this, error, callback) {
-          // if build is not closed or is done,
-          // close it
-          build.then((build) => {
-            (build.closed || isDone) && build.close();
-          });
-        },
-      });
+  _read(this: this) {
+    // if there are no chunks to get, this is an error
+    if (!this.chunks) {
+      return this.destroy(
+        new Error(
+          `Chunks returned null. We cannot push chunks into the stream if they do not exist`
+        )
+      );
     }
-  );
 
-  return { streams, close, isDone };
+    // get the chunks we need, removing them from the chunks.
+    this.push(this.chunks.splice(0, 1)[0]);
+
+    // if we have no more chunks left, destroy the stream
+    if (this.chunks.length <= 0) this.push(null);
+  }
+
+  _destroy(error: Error | null, done: (error: Error | null) => void) {
+    this.build?.close();
+    done(error);
+  }
 }
+
+/**
+ * @summary
+ * A curried function for calling `rollup.generate` into a `Readable` stream,
+ * streaming many chunks from one set of input and output options.
+ */
+export function generate(input: InputOptions) {
+  return (output?: OutputOptions): Readable => {
+    return new ReadableRollup(input, output);
+  };
+}
+
+/**
+ * @summary
+ * Maps a call to `generate` for each output and combines them into a single stream.
+ */
+export function rollup(input: InputOptions) {
+  return (...outputs: Array<OutputOptions>): PassThrough =>
+    merge(...outputs.map(generate(input))) as any;
+}
+
+export type StreamCallback = (error?: Error | null) => void;
+
+export type Require<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
+
+export interface InputOptions extends Require<RP.InputOptions, "input"> {}
+export interface OutputOptions extends RP.OutputOptions {}

@@ -22,18 +22,18 @@ export function rollup({
         ...(Array.isArray(output) ? output : [output])
       );
 
-      readable.on("data", (chunk: RP.OutputChunk | RP.OutputAsset) => {
+        const _file = file.clone();
         switch (chunk.type) {
           case "asset": {
-            file.basename = chunk.fileName;
-            file.contents = Buffer.from(chunk.source);
-            callback(null, file);
+            _file.basename = chunk.fileName;
+            _file.contents = Buffer.from(chunk.source);
+            this.push(file);
             break;
           }
           case "chunk": {
-            file.contents = Buffer.from(chunk.code);
-            file.basename = chunk.fileName;
-            callback(null, file);
+            _file.contents = Buffer.from(chunk.code);
+            _file.basename = chunk.fileName;
+            this.push(file);
             break;
           }
         }

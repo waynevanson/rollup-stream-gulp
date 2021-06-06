@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "tsc -p tsconfig.es6.json & tsc -p tsconfig.cjs.json"
+    "build": "rm -rf dist && tsc -p tsconfig.es6.json & tsc -p tsconfig.cjs.json"
   },
   "peerDependencies": {
     "rollup": "^2"

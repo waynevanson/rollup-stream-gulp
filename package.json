@@ -1,13 +1,14 @@
 {
   "name": "rollup-stream-gulp",
   "version": "0.0.0",
-  "main": "dist/cjs/index.js",
-  "module": "dist/es6/index.js",
-  "types": "dist/cjs/index.d.ts",
   "exports": {
-    "./": {
-      "import": "./dist/es6",
-      "require": "./dist/cjs"
+    "./gulp": {
+      "import": "./dist/es6/gulp.js",
+      "require": "./dist/cjs/gulp.js"
+    },
+    "./stream": {
+      "import": "./dist/es6/stream.js",
+      "require": "./dist/cjs/stream.js"
     }
   },
   "scripts": {

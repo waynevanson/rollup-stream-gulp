@@ -43,7 +43,7 @@ export function rollup({
       });
 
       readable.once("end", () => {
-        this.destroy();
+        this.push(null);
       });
     },
   });

@@ -3,8 +3,6 @@ import { Transform } from "stream";
 import { default as File } from "vinyl";
 import * as S from "./stream";
 
-// what if two input files are passed through?
-// two files could be written to the same location.
 export function rollup({
   output = [],
   ...input
@@ -27,7 +25,6 @@ export function rollup({
       readable.on("data", (chunk: RP.OutputChunk | RP.OutputAsset) => {
         switch (chunk.type) {
           case "asset": {
-            // make a vinyl asset
             file.basename = chunk.fileName;
             file.contents = Buffer.from(chunk.source);
             callback(null, file);

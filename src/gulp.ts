@@ -3,6 +3,13 @@ import { Transform } from "stream";
 import { default as File } from "vinyl";
 import * as S from "./stream";
 
+/**
+ * @summary
+ * Gulp plugin for Rollup 2.
+ *
+ * `RollupOptions.input` has been omitted as a type because
+ * the input type is received from `gulp.src()`.
+ */
 export function rollup({
   output = [],
   ...input

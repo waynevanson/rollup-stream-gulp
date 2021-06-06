@@ -1,6 +1,13 @@
 {
   "name": "rollup-gulp-stream",
   "version": "0.0.0",
+  "types": "dist/cjs/index.d.ts",
+  "exports": {
+    "./": {
+      "import": "./dist/es6",
+      "require": "./dist/cjs"
+    }
+  },
   "description": "Rollup 2 plugin and streams",
   "author": "Wayne Van Son",
   "files": [
@@ -14,13 +21,6 @@
     "node",
     "rollup"
   ],
-  "types": "dist/cjs/index.d.ts",
-  "exports": {
-    "./": {
-      "import": "./dist/es6",
-      "require": "./dist/cjs"
-    }
-  },
   "license": "MIT",
   "scripts": {
     "test": "jest",

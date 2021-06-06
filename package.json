@@ -1,5 +1,5 @@
 {
-  "name": "rollup-gulp-stream",
+  "name": "rollup-stream-gulp",
   "version": "0.0.0",
   "main": "dist/cjs/index.js",
   "module": "dist/es6/index.js",
@@ -47,7 +47,7 @@
   "files": [
     "dist"
   ],
-  "repository": "https://github.com/waynevanson/rollup-gulp-stream",
+  "repository": "https://github.com/waynevanson/rollup-stream-gulp",
   "keywords": [
     "gulpplugin",
     "gulp",
@@ -55,5 +55,5 @@
     "node",
     "rollup"
   ],
-  "license": "MIT",
+  "license": "MIT"
 }

@@ -1,11 +1,11 @@
-# rollup-gulp-stream
+# rollup-stream-gulp
 
 An implementation of both rollup 2 in a stream and a gulp plugin.
 
 ## Installation
 
 ```sh
-yarn add -D rollup-gulp-stream
+yarn add -D rollup-stream-gulp
 ```
 
 ## Usage

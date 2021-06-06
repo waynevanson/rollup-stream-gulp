@@ -1,5 +1,5 @@
 import * as RP from "rollup";
-import { PassThrough } from "stream";
+import { Transform } from "stream";
 import { default as File } from "vinyl";
 import * as S from "./stream";
 
@@ -9,7 +9,7 @@ export function rollup({
   output = [],
   ...input
 }: Omit<RP.RollupOptions, "input"> = {}) {
-  return new PassThrough({
+  return new Transform({
     objectMode: true,
     transform(file: File, _, callback) {
       if (file.isDirectory()) {

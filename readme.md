@@ -13,13 +13,14 @@ yarn add -D rollup-stream-gulp
 Currently the recommended way is to use `@rollup/stream`. This works well, but has a few limitations.
 
 - `requires \`vinyl-source-stream\``
-- only allows outputing one file per stream instance
+- Outputs utf-8 only and not the chunks containing rollup metadata
+  - only allows outputing one file per stream instance
   - `options.manualChunks` not supported
 - DX is non-optimal
 
 ## Usage
 
-### Basic
+Accepts all the `RollupOption`'s excluding `input`, which is gathered from `gulp.src()`.
 
 ```ts
 // gulpfile.ts
@@ -27,8 +28,19 @@ import gulp from "gulp";
 import rollup from "rollup-stream-gulp";
 // import rollup from "@rollup/gulp";
 
+// generates two files, both in different formats under the `dist` directory.
 export const build = async () =>
-  gulp.src("src/index.ts").pipe(rollup({})).pipe(gulp.dest("dist"));
+  gulp
+    .src("src/index.ts")
+    .pipe(
+      rollup({
+        output: [
+          { file: "index.js", format: "cjs" },
+          { file: "index.mjs", format: "esm" },
+        ],
+      })
+    )
+    .pipe(gulp.dest("dist"));
 ```
 
 ## Troubleshooting, Validation and Errors

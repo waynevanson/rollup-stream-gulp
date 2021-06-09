@@ -56,19 +56,17 @@ function __generator(thisArg, body) {
 }
 
 /**
- *
  * @summary
  * Seamless integration between `Rollup` and `Gulp`.
  *
  * @todo
- * - Support Rollup Configurations
- * - Support sourcemaps
  * - Support watch mode
  * - Handle collisions in names
  *   - Warn and explain default behaviour
  */
 // Does `rollup` report an error when multiple files with the same name try to commit to the same space?
 function index (options) {
+    if (options === void 0) { options = {}; }
     return new Transform({
         objectMode: true,
         transform: function (chunk, _, callback) {
@@ -114,9 +112,11 @@ function build(chunk, options) {
                         }
                         else {
                             contents = output_1.code;
-                            // todo - sourcemap support
+                            if (output_1.map) {
+                                contents += output_1.map.toUrl();
+                            }
                         }
-                        file = chunk.clone();
+                        file = chunk.clone({ contents: false });
                         // todo - make contents match the previous chunk
                         file.contents = Buffer.from(contents);
                         file.basename = output_1.fileName;

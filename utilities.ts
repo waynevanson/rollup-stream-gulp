@@ -15,15 +15,9 @@ export function promise(stream: NodeJS.ReadableStream) {
   });
 }
 
-/**
- * @summary
- * Removes the `stats` property from a vinyl instance.
- *
- * This is extremely useful when time is not on your side.
- */
-export const removeStats = new Transform({
+export const trimVinyl = new Transform({
   objectMode: true,
-  transform({ stat, ...file }: Vinyl, _, callback) {
-    callback(null, file);
+  transform({ contents, relative }: Vinyl, _, callback) {
+    callback(null, { contents, relative });
   },
 });

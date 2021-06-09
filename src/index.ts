@@ -61,7 +61,7 @@ async function build(
         // todo - sourcemap support
       }
 
-      const file = chunk.clone();
+      const file = chunk.clone({ contents: false });
 
       // todo - make contents match the previous chunk
       file.contents = Buffer.from(contents);

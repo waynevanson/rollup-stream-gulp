@@ -15,7 +15,7 @@ import Vinyl from "vinyl";
  *   - Warn and explain default behaviour
  */
 // Does `rollup` report an error when multiple files with the same name try to commit to the same space?
-export default function (options: RollupOptionsGulp) {
+export default function (options: RollupOptionsGulp = {}) {
   return new Transform({
     objectMode: true,
     transform(this, chunk, _, callback) {

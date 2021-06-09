@@ -5,6 +5,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
+    "test": "ava",
     "build": "gulp"
   },
   "peerDependencies": {
@@ -24,6 +25,7 @@
     "@types/gulp": "^4.0.8",
     "@types/node": "^15.12.1",
     "@types/vinyl": "^2.0.4",
+    "ava": "^4.0.0-alpha.2",
     "del": "^6.0.0",
     "gulp": "^4.0.2",
     "rollup": "^2",
@@ -45,5 +47,13 @@
     "node",
     "rollup"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "ava": {
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
+  }
 }

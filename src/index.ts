@@ -9,7 +9,6 @@ import Vinyl from "vinyl";
  *
  * @todo
  * - Support Rollup Configurations
- * - Support sourcemaps
  * - Support watch mode
  * - Handle collisions in names
  *   - Warn and explain default behaviour
@@ -58,7 +57,9 @@ async function build(
         contents = output.source;
       } else {
         contents = output.code;
-        // todo - sourcemap support
+        if (output.map) {
+          contents += output.map.toUrl();
+        }
       }
 
       const file = chunk.clone({ contents: false });

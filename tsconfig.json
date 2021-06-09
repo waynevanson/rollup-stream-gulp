@@ -3,5 +3,10 @@
     "strict": true,
     "esModuleInterop": true,
     "moduleResolution": "node"
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
   }
 }

@@ -1,6 +1,6 @@
 # rollup-stream-gulp
 
-An implementation of both rollup 2 in a stream and a gulp plugin.
+A gulp plugin, and hopefully with enough work, love and consensus becomes `@rollup/gulp`
 
 ## Installation
 
@@ -8,23 +8,32 @@ An implementation of both rollup 2 in a stream and a gulp plugin.
 yarn add -D rollup-stream-gulp
 ```
 
+## Purpose
+
+Currently the recommended way is to use `@rollup/stream`. This works well, but has a few limitations.
+
+- `requires \`vinyl-source-stream\``
+- only allows outputing one file per stream instance
+  - `options.manualChunks` not supported
+- DX is non-optimal
+
 ## Usage
 
-There are two modules: `stream` and `rollup`
-
-### Stream
-
-Stream is simple. Each chunk emitted is of type `OutputChunk` or `OutputAsset`.
-Streams in object mode (like this one) only emit one chunk at a time.
-
-There are a few methods, but you'll find yourself using `/stream#rollup` most often.
+### Basic
 
 ```ts
+// gulpfile.ts
+import gulp from "gulp";
+import rollup from "rollup-stream-gulp";
+// import rollup from "@rollup/gulp";
 
+export const build = async () =>
+  gulp.src("src/index.ts").pipe(rollup({})).pipe(gulp.dest("dist"));
 ```
 
-### Gulp
+## Troubleshooting, Validation and Errors
 
-Gulp is simple too. Use the gulp `src` and `dest` api's and rollup will bundle like it should, according to the configuration.
+There are a few caveats.
 
-Need to add new files next!
+Internally we use `options.input = file.path`, which means we may not get errors about file conflicts.
+We'll be looking to address these later on.

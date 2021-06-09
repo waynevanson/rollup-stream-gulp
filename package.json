@@ -1,49 +1,38 @@
 {
   "name": "rollup-stream-gulp",
-  "version": "0.0.0",
-  "exports": {
-    "./gulp": {
-      "import": "./dist/es6/gulp.js",
-      "require": "./dist/cjs/gulp.js"
-    },
-    "./stream": {
-      "import": "./dist/es6/stream.js",
-      "require": "./dist/cjs/stream.js"
-    }
-  },
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "jest",
-    "build": "rm -rf dist && tsc -p tsconfig.es6.json & tsc -p tsconfig.cjs.json"
+    "build": "gulp"
   },
   "peerDependencies": {
-    "rollup": "^2"
+    "rollup": "^2",
+    "vinyl": "^2.2.1"
   },
   "peerDependenciesMeta": {
     "rollup": {
       "optional": false
+    },
+    "vinyl": {
+      "optional": false
     }
   },
   "devDependencies": {
+    "@rollup/plugin-typescript": "^8.2.1",
     "@types/gulp": "^4.0.8",
-    "@types/jest": "^26.0.23",
     "@types/node": "^15.12.1",
-    "@types/merge-stream": "^1.1.2",
     "@types/vinyl": "^2.0.4",
+    "del": "^6.0.0",
     "gulp": "^4.0.2",
-    "jest": "^27.0.4",
     "rollup": "^2",
-    "ts-jest": "^27.0.2",
     "ts-node": "^10.0.0",
+    "tslib": "^2.2.0",
     "typescript": "^4.3.2",
     "vinyl": "^2.2.1"
   },
-  "dependencies": {
-    "merge-stream": "^2.0.0"
-  },
-  "engines": {
-    "node": ">=12"
-  },
-  "description": "Implentation of Rollup as a stream and Rollup as a Gulp plugin",
+  "description": "Gulp plugin for Rollup",
   "author": "Wayne Van Son",
   "files": [
     "dist"

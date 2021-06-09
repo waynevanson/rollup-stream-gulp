@@ -3,12 +3,10 @@ import { Transform } from "stream";
 import Vinyl from "vinyl";
 
 /**
- *
  * @summary
  * Seamless integration between `Rollup` and `Gulp`.
  *
  * @todo
- * - Support Rollup Configurations
  * - Support watch mode
  * - Handle collisions in names
  *   - Warn and explain default behaviour

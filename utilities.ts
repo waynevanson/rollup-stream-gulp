@@ -1,11 +1,38 @@
 import { Transform } from "stream";
 import Vinyl from "vinyl";
+import gulp from "gulp";
+import path from "path";
+import crypto from "crypto";
+import del from "del";
+
+const DIR_FIXTURES = path.resolve(__dirname, "tests/fixtures");
+
+/**
+ * @summary
+ * Copy's the contents of a fixture and put's it in it's on folder: a sandbox.
+ *
+ * @todo get unique hash by checking a cache for previously used values
+ */
+export async function createSandboxedDirectory(fixture_name: string) {
+  // compute the location of all files within the fixture
+  const dirFixture = path.resolve(DIR_FIXTURES, fixture_name);
+  const fixtureFiles = path.resolve(dirFixture, "./**");
+
+  // compute a randomly generated destination dir
+  const hash = crypto.randomBytes(16).toString("hex");
+  const environment = path.join(__dirname, "__generated", hash);
+
+  // copy files from fixtures to the test folder
+  await streamToPromise(gulp.src(fixtureFiles).pipe(gulp.dest(environment)));
+
+  return environment;
+}
 
 /**
  * @summary
  * Converts a stream, putting it's contents in order and returning a promise
  */
-export function promise(stream: NodeJS.ReadableStream) {
+export function streamToPromise(stream: NodeJS.ReadableStream) {
   const x: unknown[] = [];
   return new Promise<unknown[]>((res, rej) => {
     stream
@@ -15,6 +42,10 @@ export function promise(stream: NodeJS.ReadableStream) {
   });
 }
 
+/**
+ * @summary
+ * Keeps only the propertied `contents` and `relative` from a `Vinyl` instance
+ */
 export const trimVinyl = new Transform({
   objectMode: true,
   transform({ contents, relative }: Vinyl, _, callback) {

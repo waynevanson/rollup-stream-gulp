@@ -14,7 +14,7 @@ import {
   createSandboxedDirectory,
   streamToPromise,
   trimVinyl,
-} from "../utilities";
+} from "./utilities";
 
 interface MacroProps {
   fixture: string;

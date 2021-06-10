@@ -52,6 +52,10 @@
     "extensions": [
       "ts"
     ],
+    "files": [
+      "tests/**/*",
+      "!tests/utilities.ts"
+    ],
     "require": [
       "ts-node/register"
     ]

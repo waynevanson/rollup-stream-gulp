@@ -5,7 +5,7 @@ import path from "path";
 import crypto from "crypto";
 import del from "del";
 
-const DIR_FIXTURES = path.resolve(__dirname, "tests/fixtures");
+const DIR_FIXTURES = path.resolve(__dirname, "fixtures");
 
 /**
  * @summary
@@ -20,7 +20,7 @@ export async function createSandboxedDirectory(fixture_name: string) {
 
   // compute a randomly generated destination dir
   const hash = crypto.randomBytes(16).toString("hex");
-  const environment = path.join(__dirname, "__generated", hash);
+  const environment = path.join(__dirname, "../__generated", hash);
 
   // copy files from fixtures to the test folder
   await streamToPromise(gulp.src(fixtureFiles).pipe(gulp.dest(environment)));

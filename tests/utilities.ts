@@ -19,7 +19,7 @@ export async function createSandboxedDirectory(fixture_name: string) {
 
   // compute a randomly generated destination dir
   const hash = crypto.randomBytes(16).toString("hex");
-  const environment = path.join(__dirname, "../__generated", hash);
+  const environment = path.join(__dirname, "./__generated", hash);
 
   // copy files from fixtures to the test folder
   await streamToPromise(gulp.src(fixtureFiles).pipe(gulp.dest(environment)));
@@ -55,6 +55,6 @@ export const trimVinyl = new Transform({
       ? Promise.resolve(null)
       : streamToPromise(contents).then((contents) => contents.join(""));
 
-    next.then((contents) => callback(null, { contents, relative }));
+    next.then((contents) => callback(null, { relative, contents }));
   },
 });

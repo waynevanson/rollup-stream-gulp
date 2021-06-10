@@ -15,6 +15,8 @@ import {
   streamToPromise,
   trimVinyl,
 } from "./utilities";
+import resolve from "@rollup/plugin-node-resolve";
+import commonjs from "@rollup/plugin-commonjs";
 
 interface MacroProps {
   fixture: string;
@@ -32,7 +34,6 @@ const macro: Macro<[MacroProps]> = async (
   { src, dest, fixture, options }
 ) => {
   const cwd = await createSandboxedDirectory(fixture);
-
   // run rollup
   await streamToPromise(
     gulp.src(src, { cwd }).pipe(rollup(options)).pipe(gulp.dest(dest, { cwd }))
@@ -45,13 +46,23 @@ const macro: Macro<[MacroProps]> = async (
   );
 
   assert.snapshot(result);
+  await del(cwd);
 
   // clean up directory
-  await del(cwd);
 };
 
 test("works with no input options", macro, {
   fixture: "simple",
   src: "index.js",
   dest: "dist",
+});
+
+test.only("manual chunks splits into manual chunks", macro, {
+  fixture: "three-to-one",
+  src: "index.js",
+  dest: "dist",
+  options: {
+    output: { manualChunks: { reactor: ["react"] } },
+    plugins: [resolve(), commonjs()],
+  },
 });

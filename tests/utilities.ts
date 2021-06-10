@@ -1,9 +1,8 @@
-import { Transform } from "stream";
-import Vinyl from "vinyl";
+import crypto from "crypto";
 import gulp from "gulp";
 import path from "path";
-import crypto from "crypto";
-import del from "del";
+import { Transform } from "stream";
+import Vinyl from "vinyl";
 
 const DIR_FIXTURES = path.resolve(__dirname, "fixtures");
 
@@ -49,6 +48,13 @@ export function streamToPromise(stream: NodeJS.ReadableStream) {
 export const trimVinyl = new Transform({
   objectMode: true,
   transform({ contents, relative }: Vinyl, _, callback) {
-    callback(null, { contents, relative });
+    // convert contents to a human readable format
+    const next: Promise<string | null> = Buffer.isBuffer(contents)
+      ? Promise.resolve(contents.toString())
+      : contents === null
+      ? Promise.resolve(null)
+      : streamToPromise(contents).then((contents) => contents.join(""));
+
+    next.then((contents) => callback(null, { contents, relative }));
   },
 });
